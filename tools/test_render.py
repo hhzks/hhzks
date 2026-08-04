@@ -150,12 +150,41 @@ class TestReadmeBlock(unittest.TestCase):
         self.assertNotIn("](../", self.block)
         self.assertNotIn("](s/", self.block)
 
-    def test_block_states_the_rules(self):
-        self.assertIn("Turn every light off", self.block)
+    def test_block_uses_the_short_readme_rule_line(self):
+        self.assertIn(render.README_RULES, self.block)
 
     def test_block_does_not_promise_a_specific_time_of_day(self):
-        self.assertNotIn("midnight", self.block.lower())
-        self.assertIn("daily", self.block.lower())
+        for claim in ("midnight", "06:00", "6am", "every morning"):
+            self.assertNotIn(claim, self.block.lower())
+
+    def test_block_is_reproduced_exactly_by_regeneration(self):
+        # The generator rewrites everything between the markers, so whatever it
+        # emits is what the profile shows tomorrow.
+        self.assertEqual(self.block, render.readme_block(PUZZLE, REPO))
+
+    def test_rule_line_sits_directly_above_the_table(self):
+        # Matches the hand-edited README on main byte for byte, so the daily
+        # run reproduces it instead of reverting it.
+        lines = self.block.splitlines()
+        rule = lines.index(render.README_RULES)
+        self.assertTrue(lines[rule + 1].startswith("|"), "blank line before table")
+
+
+class TestAboutLink(unittest.TestCase):
+    """The profile README carries no `## Lights Out` heading, so state pages
+    cannot rely on a bare `#lights-out` fragment."""
+
+    def test_state_pages_link_about_at_the_how_it_works_doc(self):
+        page = render.state_page(PUZZLE, lo.click(PUZZLE.start, 2), REPO)
+        self.assertIn(f"https://github.com/{REPO}/blob/main/{render.ABOUT_PATH}", page)
+
+    def test_solved_page_links_about_at_the_how_it_works_doc(self):
+        page = render.state_page(PUZZLE, 0x0000, REPO)
+        self.assertIn(f"https://github.com/{REPO}/blob/main/{render.ABOUT_PATH}", page)
+
+    def test_no_page_relies_on_a_bare_anchor_fragment(self):
+        for state in (PUZZLE.start, 0x0000, lo.click(PUZZLE.start, 5)):
+            self.assertNotIn("#lights-out", render.state_page(PUZZLE, state, REPO))
 
 
 class TestReadmeSplicing(unittest.TestCase):

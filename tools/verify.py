@@ -135,24 +135,15 @@ def check_readme(repo, root, out):
     return errors
 
 
-def _slug(heading):
-    """Approximate GitHub's heading-to-anchor rule."""
-    text = re.sub(r"[^\w\s-]", "", heading.lstrip("#").strip().lower())
-    return re.sub(r"\s+", "-", text).strip("-")
+def check_about_target(root):
+    """All 4,096 state pages link out to the explanation; it must exist.
 
-
-def check_profile_anchor(root):
-    """Every state page links back to `#lights-out`, so the heading must exist.
-
-    The generated block heading carries the date and slugs to something else,
-    which is why this looks for the standalone section rather than any match.
+    The README carries no `## Lights Out` heading, so there is no anchor to
+    check -- the link target is a real file on `main` instead.
     """
-    text = (Path(root) / "README.md").read_text(encoding="utf-8")
-    slugs = {_slug(line) for line in text.splitlines() if line.startswith("#")}
-    if "lights-out" not in slugs:
+    if not (Path(root) / render.ABOUT_PATH).is_file():
         return [
-            "README has no heading anchoring #lights-out; "
-            "all 4096 state pages link there"
+            f"{render.ABOUT_PATH} is missing; all 4096 state pages link to it"
         ]
     return []
 
@@ -167,7 +158,7 @@ def verify(day, repo, out, root):
         + check_tiles(out)
         + check_click_targets(day, out)
         + check_readme(repo, root, out)
-        + check_profile_anchor(root)
+        + check_about_target(root)
     )
 
 

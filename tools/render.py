@@ -12,7 +12,14 @@ import lightsout as lo
 START_MARKER = "<!-- LIGHTS:START -->"
 END_MARKER = "<!-- LIGHTS:END -->"
 
+# The play pages state the goal; the profile README is kept deliberately terse.
 RULES = "Click a tile to toggle it and its neighbours. Turn every light off."
+README_RULES = "Click a tile to toggle it and its neighbours."
+
+# The profile README carries no `## Lights Out` heading, so there is no
+# `#lights-out` anchor to point at. Link the explanation itself instead.
+ABOUT_PATH = "docs/how-it-works.md"
+
 TILE_WIDTH = 64
 ARCHIVE_TILE_WIDTH = 28
 
@@ -72,6 +79,7 @@ def _coords(click_set):
 def state_page(puzzle, state, repo):
     """One page per reachable board. The solved board gets a different body."""
     profile = f"https://github.com/{repo}"
+    about = f"{profile}/blob/main/{ABOUT_PATH}"
     yesterday = puzzle.date - dt.timedelta(days=1)
     archive_url = f"{profile}/blob/main/{archive_path(yesterday)}"
 
@@ -84,7 +92,7 @@ def state_page(puzzle, state, repo):
             f"Every light is off. Today's board could be cleared in "
             f"**{puzzle.min_clicks} clicks** — how did you do?\n\n"
             f"[Play again]({relative_link(state, puzzle.start)}) · "
-            f"[Back to the profile]({profile}#lights-out) · "
+            f"[How it works]({about}) · "
             f"[Past puzzles]({archive_url})\n"
         )
 
@@ -95,7 +103,7 @@ def state_page(puzzle, state, repo):
         f"{RULES}\n\n"
         f"{board}\n\n"
         f"[↻ Reset]({relative_link(state, puzzle.start)}) · "
-        f"[About]({profile}#lights-out) · "
+        f"[About]({about}) · "
         f"[Yesterday's solution]({archive_url})\n\n"
         f"<details><summary>Hint</summary>\n\n"
         f"{remaining} clicks from solved.\n\n"
@@ -117,7 +125,7 @@ def readme_block(puzzle, repo):
     return (
         f"{START_MARKER}\n"
         f"### Lights Out · {puzzle.date}\n\n"
-        f"{RULES} A new puzzle daily.\n\n"
+        f"{README_RULES}\n"
         f"{board}\n"
         f"{END_MARKER}\n"
     )
