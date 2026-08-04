@@ -28,10 +28,12 @@ def setUpModule():
     ROOT = Path(tempfile.mkdtemp())
     OUT = Path(tempfile.mkdtemp())
     (ROOT / "img").mkdir()
-    (ROOT / "img" / "on.svg").write_text("<svg>on</svg>", encoding="utf-8")
-    (ROOT / "img" / "off.svg").write_text("<svg>off</svg>", encoding="utf-8")
+    for name in render.IMAGES:
+        (ROOT / "img" / f"{name}.svg").write_text(f"<svg>{name}</svg>", encoding="utf-8")
     (ROOT / "README.md").write_text(
-        f"{render.START_MARKER}\nold\n{render.END_MARKER}\n", encoding="utf-8"
+        f"{render.START_MARKER}\nold\n{render.END_MARKER}\n\n"
+        f"📁 [Past puzzles](archive/) · ℹ️ [About]({render.ABOUT_PATH})\n",
+        encoding="utf-8",
     )
     doc = ROOT / render.ABOUT_PATH
     doc.parent.mkdir(parents=True, exist_ok=True)
@@ -170,6 +172,32 @@ class TestReadmeChecks(unittest.TestCase):
 
     def test_a_clean_readme_produces_no_errors(self):
         self.assertEqual(verify.check_readme(REPO, ROOT, OUT), [])
+
+    def test_a_readme_that_stops_linking_to_the_explanation_is_caught(self):
+        with Corrupted(ROOT / "README.md") as path:
+            text = path.read_text(encoding="utf-8")
+            path.write_text(text.replace(f"]({render.ABOUT_PATH})", "](nowhere)"), encoding="utf-8")
+            errors = verify.check_readme(REPO, ROOT, OUT)
+        self.assertTrue(any(render.ABOUT_PATH in e for e in errors))
+
+
+class TestAssetChecks(unittest.TestCase):
+    """Broken tile images would leave the board unreadable on the profile."""
+
+    def test_a_full_set_of_images_passes(self):
+        self.assertEqual(verify.check_assets(ROOT), [])
+
+    def test_a_missing_animated_readme_tile_is_caught(self):
+        with Corrupted(ROOT / "img" / "init.svg") as path:
+            path.unlink()
+            errors = verify.check_assets(ROOT)
+        self.assertTrue(any("init.svg" in e for e in errors))
+
+    def test_a_missing_state_page_tile_is_caught(self):
+        with Corrupted(ROOT / "img" / "on.svg") as path:
+            path.unlink()
+            errors = verify.check_assets(ROOT)
+        self.assertTrue(any("on.svg" in e for e in errors))
 
 
 class TestAboutTarget(unittest.TestCase):

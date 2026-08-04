@@ -170,6 +170,45 @@ class TestReadmeBlock(unittest.TestCase):
         self.assertTrue(lines[rule + 1].startswith("|"), "blank line before table")
 
 
+class TestReadmeTileImage(unittest.TestCase):
+    """The profile board lights its tiles with the animated `init.svg`; the
+    4,096 state pages and the archive keep the static `on.svg`."""
+
+    def setUp(self):
+        self.block = render.readme_block(PUZZLE, REPO)
+        self.lit = PUZZLE.start.bit_count()
+
+    def test_lit_tiles_use_the_animated_image(self):
+        self.assertEqual(self.block.count("img/init.svg"), self.lit)
+
+    def test_no_lit_tile_falls_back_to_the_static_image(self):
+        self.assertNotIn("img/on.svg", self.block)
+
+    def test_unlit_tiles_keep_the_off_image(self):
+        self.assertEqual(self.block.count("img/off.svg"), lo.CELLS - self.lit)
+
+    def test_animated_tiles_land_on_the_lit_cells_of_the_start_board(self):
+        rows = self.block.splitlines()[-5:-1]
+        for r, row in enumerate(rows):
+            tiles = re.findall(r"img/(init|off)\.svg", row)
+            self.assertEqual(len(tiles), 4)
+            for c, tile in enumerate(tiles):
+                lit = PUZZLE.start >> (r * 4 + c) & 1
+                self.assertEqual(tile, "init" if lit else "off", f"cell r{r}c{c}")
+
+    def test_alt_text_still_describes_the_state_not_the_file(self):
+        self.assertNotIn('alt="init"', self.block)
+        self.assertEqual(self.block.count('alt="on"'), self.lit)
+
+    def test_state_pages_keep_the_static_image(self):
+        page = render.state_page(PUZZLE, PUZZLE.start, REPO)
+        self.assertNotIn("init.svg", page)
+        self.assertEqual(page.count("img/on.svg"), self.lit)
+
+    def test_archive_entries_keep_the_static_image(self):
+        self.assertNotIn("init.svg", render.archive_entry(PUZZLE))
+
+
 class TestAboutLink(unittest.TestCase):
     """The profile README carries no `## Lights Out` heading, so state pages
     cannot rely on a bare `#lights-out` fragment."""

@@ -132,7 +132,22 @@ def check_readme(repo, root, out):
             errors.append(f"README links to {owner_repo}, expected {repo}")
         elif not (Path(out) / path).exists():
             errors.append(f"README links to {path}, which does not exist on daily")
+
+    # The About link lives outside the markers, so the generator never rewrites
+    # it -- which also means nothing else would notice if it were dropped.
+    if f"]({render.ABOUT_PATH})" not in text:
+        errors.append(f"README no longer links to {render.ABOUT_PATH}")
     return errors
+
+
+def check_assets(root):
+    """Every tile image the boards reference must exist on `main`."""
+    root = Path(root)
+    return [
+        f"img/{name}.svg is missing"
+        for name in render.IMAGES
+        if not (root / "img" / f"{name}.svg").is_file()
+    ]
 
 
 def check_about_target(root):
@@ -159,6 +174,7 @@ def verify(day, repo, out, root):
         + check_click_targets(day, out)
         + check_readme(repo, root, out)
         + check_about_target(root)
+        + check_assets(root)
     )
 
 

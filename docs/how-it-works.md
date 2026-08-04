@@ -55,10 +55,16 @@ State files are sharded by their first hex digit, `s/c/c732.md`, keeping each
 directory to about 256 entries. A flat directory of 4,096 files is slow in the
 GitHub UI and paginates at 1,000.
 
-Only two images exist for the entire game — `on.svg` and `off.svg`. Rendering a
-board image per state would be the obvious approach and the wrong one: two fixed
-files keep the repository small *and* sidestep GitHub's Camo image cache
-entirely, because a stale cache of a file that never changes is always correct.
+Three images exist for the entire game — `on.svg`, `off.svg`, and `init.svg`,
+an animated lit tile used only for the board on the profile README. Rendering a
+board image per state would be the obvious approach and the wrong one: a handful
+of fixed files keeps the repository small *and* sidesteps GitHub's Camo image
+cache entirely, because a stale cache of a file that never changes is always
+correct.
+
+Inside the game the lit tiles are static. The animation is there to say *this is
+a thing you can click* on a profile page, not to move while you are reading a
+board.
 
 ## What it deliberately does not do
 

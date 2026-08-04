@@ -58,10 +58,12 @@ def write_state_graph(day, repo, out, root):
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(render.state_page(day, state, repo), encoding="utf-8")
 
+    # Only the two static tiles. `init.svg` belongs to the README on `main`, and
+    # nothing in the state graph references it.
     images = out / "img"
     images.mkdir(parents=True, exist_ok=True)
-    for name in ("on.svg", "off.svg"):
-        shutil.copyfile(root / "img" / name, images / name)
+    for name in (render.LIT, render.UNLIT):
+        shutil.copyfile(root / "img" / f"{name}.svg", images / f"{name}.svg")
 
     return len(states)
 

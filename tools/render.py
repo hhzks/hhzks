@@ -20,6 +20,14 @@ README_RULES = "Click a tile to toggle it and its neighbours."
 # `#lights-out` anchor to point at. Link the explanation itself instead.
 ABOUT_PATH = "docs/how-it-works.md"
 
+# Tile images. The profile board lights up with `init.svg`, which animates; the
+# 4,096 state pages and the archive use the static `on.svg`, so a page full of
+# lit tiles stays still while you are reading the board.
+LIT = "on"
+README_LIT = "init"
+UNLIT = "off"
+IMAGES = (LIT, README_LIT, UNLIT)
+
 TILE_WIDTH = 64
 ARCHIVE_TILE_WIDTH = 28
 
@@ -41,15 +49,18 @@ def relative_link(from_state, to_state):
     return f"../{name[0]}/{name}.md"
 
 
-def _tile(state, i, src_prefix, width, link_for):
-    lit = "on" if state >> i & 1 else "off"
-    img = f'<img src="{src_prefix}/img/{lit}.svg" width="{width}" alt="{lit}">'
+def _tile(state, i, src_prefix, width, link_for, lit_name):
+    # The alt text describes the cell, not the file, so swapping the lit image
+    # does not change what a screen reader reads out.
+    lit = state >> i & 1
+    name = lit_name if lit else UNLIT
+    img = f'<img src="{src_prefix}/img/{name}.svg" width="{width}" alt="{LIT if lit else UNLIT}">'
     if link_for is None:
         return img
     return f"[{img}]({link_for(i)})"
 
 
-def board_table(state, link_for=None, src_prefix="../..", width=TILE_WIDTH):
+def board_table(state, link_for=None, src_prefix="../..", width=TILE_WIDTH, lit_name=LIT):
     """The 4x4 board as a markdown table.
 
     The header row is empty but must declare four cells, otherwise GitHub will
@@ -57,7 +68,10 @@ def board_table(state, link_for=None, src_prefix="../..", width=TILE_WIDTH):
     """
     lines = ["|  |  |  |  |", "|:-:|:-:|:-:|:-:|"]
     for r in range(4):
-        cells = [_tile(state, r * 4 + c, src_prefix, width, link_for) for c in range(4)]
+        cells = [
+            _tile(state, r * 4 + c, src_prefix, width, link_for, lit_name)
+            for c in range(4)
+        ]
         lines.append("| " + " | ".join(cells) + " |")
     return "\n".join(lines)
 
@@ -121,7 +135,9 @@ def readme_block(puzzle, repo):
         target = puzzle.start ^ lo.MASKS[i]
         return f"https://github.com/{repo}/blob/daily/{state_path(target)}"
 
-    board = board_table(puzzle.start, link_for=link_for, src_prefix=".")
+    board = board_table(
+        puzzle.start, link_for=link_for, src_prefix=".", lit_name=README_LIT
+    )
     return (
         f"{START_MARKER}\n"
         f"### Lights Out · {puzzle.date}\n\n"
