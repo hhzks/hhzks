@@ -10,4 +10,4 @@ Click a tile to toggle it and its neighbours.
 | [<img src="./img/off.svg" width="64" alt="off">](https://github.com/hhzks/hhzks/blob/daily/s/f/f632.md) | [<img src="./img/off.svg" width="64" alt="off">](https://github.com/hhzks/hhzks/blob/daily/s/b/b532.md) | [<img src="./img/init.svg" width="64" alt="on">](https://github.com/hhzks/hhzks/blob/daily/s/2/2332.md) | [<img src="./img/init.svg" width="64" alt="on">](https://github.com/hhzks/hhzks/blob/daily/s/0/0f32.md) |
 <!-- LIGHTS:END -->
 
-📁 [Past puzzles and their solutions](archive/) · 🔎 [View source](src/)
+[Past puzzles](archive/) · [View source](src/)
