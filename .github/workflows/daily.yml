@@ -1,0 +1,83 @@
+name: daily-lights-out
+
+on:
+  schedule:
+    # Actions cron is queued at low priority and drifts by minutes to hours,
+    # so nothing user-facing promises a specific time of day.
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+    inputs:
+      date:
+        description: "Puzzle date (YYYY-MM-DD). Blank means today, UTC."
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-lights-out
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Unit tests
+        run: python -m unittest discover -s tools -t tools
+
+      - name: Generate the puzzle
+        run: |
+          python tools/generate.py --out build/daily \
+            ${{ inputs.date && format('--date {0}', inputs.date) || '' }}
+
+      # Must pass before anything is pushed: a broken push means a dead puzzle
+      # on the profile until tomorrow.
+      - name: Verify
+        run: |
+          python tools/verify.py --out build/daily --days 14 \
+            ${{ inputs.date && format('--date {0}', inputs.date) || '' }}
+
+      - name: Commit README and archive to main
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Staged explicitly -- never `git add -A`, which would sweep in build/.
+          git add README.md archive
+          if git diff --cached --quiet; then
+            echo "nothing to commit"
+          else
+            git commit -m "lights out: $(date -u +%F)"
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi
+
+      - name: Force-push the state graph to the orphan daily branch
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # A fresh repo each run, so `daily` never accumulates history.
+          cd build/daily
+          git init -q -b daily
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -q -m "puzzle $(date -u +%F)"
+          git push -q --force \
+            "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" daily
+
+      - name: Summary
+        run: |
+          {
+            echo "### Lights Out"
+            echo ""
+            echo "- states published: $(find build/daily -name '*.md' | wc -l)"
+            echo "- size: $(du -sh build/daily | cut -f1)"
+            echo "- board: https://github.com/${GITHUB_REPOSITORY}#lights-out"
+          } >> "$GITHUB_STEP_SUMMARY"
