@@ -1,8 +1,7 @@
 <!-- LIGHTS:START -->
 ### Lights Out · 2026-08-04
 
-Click a tile to toggle it and its neighbours. Turn every light off. A new puzzle daily.
-
+Click a tile to toggle it and its neighbours.
 |  |  |  |  |
 |:-:|:-:|:-:|:-:|
 | [<img src="./img/off.svg" width="64" alt="off">](https://github.com/hhzks/hhzks/blob/daily/s/c/c721.md) | [<img src="./img/on.svg" width="64" alt="on">](https://github.com/hhzks/hhzks/blob/daily/s/c/c715.md) | [<img src="./img/off.svg" width="64" alt="off">](https://github.com/hhzks/hhzks/blob/daily/s/c/c77c.md) | [<img src="./img/off.svg" width="64" alt="off">](https://github.com/hhzks/hhzks/blob/daily/s/c/c7be.md) |
