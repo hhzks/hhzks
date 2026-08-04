@@ -133,10 +133,10 @@ def check_readme(repo, root, out):
         elif not (Path(out) / path).exists():
             errors.append(f"README links to {path}, which does not exist on daily")
 
-    # The About link lives outside the markers, so the generator never rewrites
+    # The source link lives outside the markers, so the generator never rewrites
     # it -- which also means nothing else would notice if it were dropped.
-    if f"]({render.ABOUT_PATH})" not in text:
-        errors.append(f"README no longer links to {render.ABOUT_PATH}")
+    if f"]({render.SOURCE_PATH}/)" not in text:
+        errors.append(f"README no longer links to {render.SOURCE_PATH}/")
     return errors
 
 
@@ -150,15 +150,16 @@ def check_assets(root):
     ]
 
 
-def check_about_target(root):
-    """All 4,096 state pages link out to the explanation; it must exist.
+def check_source_target(root):
+    """All 4,096 state pages link at the source directory.
 
-    The README carries no `## Lights Out` heading, so there is no anchor to
-    check -- the link target is a real file on `main` instead.
+    Opening it is only useful because GitHub renders its README underneath the
+    file listing, so that file is what actually has to be there.
     """
-    if not (Path(root) / render.ABOUT_PATH).is_file():
+    if not (Path(root) / render.SOURCE_DOC).is_file():
         return [
-            f"{render.ABOUT_PATH} is missing; all 4096 state pages link to it"
+            f"{render.SOURCE_DOC} is missing; all 4096 state pages link to "
+            f"{render.SOURCE_PATH}/ expecting it to render"
         ]
     return []
 
@@ -173,7 +174,7 @@ def verify(day, repo, out, root):
         + check_tiles(out)
         + check_click_targets(day, out)
         + check_readme(repo, root, out)
-        + check_about_target(root)
+        + check_source_target(root)
         + check_assets(root)
     )
 

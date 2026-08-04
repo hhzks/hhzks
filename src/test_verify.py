@@ -32,10 +32,10 @@ def setUpModule():
         (ROOT / "img" / f"{name}.svg").write_text(f"<svg>{name}</svg>", encoding="utf-8")
     (ROOT / "README.md").write_text(
         f"{render.START_MARKER}\nold\n{render.END_MARKER}\n\n"
-        f"📁 [Past puzzles](archive/) · ℹ️ [About]({render.ABOUT_PATH})\n",
+        f"[Past puzzles](archive/) · [{render.SOURCE_LABEL}]({render.SOURCE_PATH}/)\n",
         encoding="utf-8",
     )
-    doc = ROOT / render.ABOUT_PATH
+    doc = ROOT / render.SOURCE_DOC
     doc.parent.mkdir(parents=True, exist_ok=True)
     doc.write_text("# How it works\n", encoding="utf-8")
     generate.main(
@@ -173,12 +173,14 @@ class TestReadmeChecks(unittest.TestCase):
     def test_a_clean_readme_produces_no_errors(self):
         self.assertEqual(verify.check_readme(REPO, ROOT, OUT), [])
 
-    def test_a_readme_that_stops_linking_to_the_explanation_is_caught(self):
+    def test_a_readme_that_stops_linking_to_the_source_is_caught(self):
         with Corrupted(ROOT / "README.md") as path:
             text = path.read_text(encoding="utf-8")
-            path.write_text(text.replace(f"]({render.ABOUT_PATH})", "](nowhere)"), encoding="utf-8")
+            path.write_text(
+                text.replace(f"]({render.SOURCE_PATH}/)", "](nowhere)"), encoding="utf-8"
+            )
             errors = verify.check_readme(REPO, ROOT, OUT)
-        self.assertTrue(any(render.ABOUT_PATH in e for e in errors))
+        self.assertTrue(any(render.SOURCE_PATH in e for e in errors))
 
 
 class TestAssetChecks(unittest.TestCase):
@@ -200,18 +202,18 @@ class TestAssetChecks(unittest.TestCase):
         self.assertTrue(any("on.svg" in e for e in errors))
 
 
-class TestAboutTarget(unittest.TestCase):
-    """State pages link out to a doc on `main`; that file has to be there."""
+class TestSourceTarget(unittest.TestCase):
+    """Every page links at the source directory, which is only worth opening
+    because GitHub renders its README underneath the file listing."""
 
     def test_a_present_doc_passes(self):
-        self.assertEqual(verify.check_about_target(ROOT), [])
+        self.assertEqual(verify.check_source_target(ROOT), [])
 
     def test_a_missing_doc_is_caught(self):
-        doc = ROOT / render.ABOUT_PATH
-        with Corrupted(doc) as path:
+        with Corrupted(ROOT / render.SOURCE_DOC) as path:
             path.unlink()
-            errors = verify.check_about_target(ROOT)
-        self.assertTrue(any(render.ABOUT_PATH in e for e in errors))
+            errors = verify.check_source_target(ROOT)
+        self.assertTrue(any(render.SOURCE_DOC in e for e in errors))
 
 
 class TestMainFailsLoudly(unittest.TestCase):

@@ -17,9 +17,12 @@ RULES = "Click a tile to toggle it and its neighbours. Turn every light off."
 README_RULES = "Click a tile to toggle it and its neighbours."
 
 # The profile README carries no `## Lights Out` heading, so there is no
-# `#lights-out` anchor to point at. Link the explanation itself instead: it is
-# the README of `src/`, so GitHub also renders it when browsing the sources.
-ABOUT_PATH = "src/README.md"
+# `#lights-out` anchor to point at. Link the sources instead: GitHub renders
+# `src/README.md` under the file listing, so opening the directory shows the
+# explanation and the code that implements it at the same time.
+SOURCE_PATH = "src"
+SOURCE_DOC = f"{SOURCE_PATH}/README.md"
+SOURCE_LABEL = "View source"
 
 # Tile images. The profile board lights up with `init.svg`, which animates; the
 # 4,096 state pages and the archive use the static `on.svg`, so a page full of
@@ -93,21 +96,26 @@ def _coords(click_set):
 
 def state_page(puzzle, state, repo):
     """One page per reachable board. The solved board gets a different body."""
-    profile = f"https://github.com/{repo}"
-    about = f"{profile}/blob/main/{ABOUT_PATH}"
+    repository = f"https://github.com/{repo}"
+    source = f"{repository}/tree/main/{SOURCE_PATH}"
+    # The board is rendered on the owner's profile, not on the repository page.
+    profile = f"https://github.com/{repo.split('/')[0]}"
     yesterday = puzzle.date - dt.timedelta(days=1)
-    archive_url = f"{profile}/blob/main/{archive_path(yesterday)}"
+    archive_url = f"{repository}/blob/main/{archive_path(yesterday)}"
 
     if state == 0x0000:
         board = board_table(state, link_for=None)
+        # <kbd> survives GitHub's sanitiser and renders as a raised key, which
+        # is as close to a button as a rendered README gets.
         return (
             f"# Lights Out · {puzzle.date}\n\n"
             f"## Solved 🎉\n\n"
             f"{board}\n\n"
             f"Every light is off. Today's board could be cleared in "
             f"**{puzzle.min_clicks} clicks** — how did you do?\n\n"
+            f"[<kbd> ← Back to the profile </kbd>]({profile})\n\n"
             f"[Play again]({relative_link(state, puzzle.start)}) · "
-            f"[How it works]({about}) · "
+            f"[{SOURCE_LABEL}]({source}) · "
             f"[Past puzzles]({archive_url})\n"
         )
 
@@ -118,7 +126,7 @@ def state_page(puzzle, state, repo):
         f"{RULES}\n\n"
         f"{board}\n\n"
         f"[↻ Reset]({relative_link(state, puzzle.start)}) · "
-        f"[About]({about}) · "
+        f"[{SOURCE_LABEL}]({source}) · "
         f"[Yesterday's solution]({archive_url})\n\n"
         f"<details><summary>Hint</summary>\n\n"
         f"{remaining} clicks from solved.\n\n"

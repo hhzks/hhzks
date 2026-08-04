@@ -128,6 +128,23 @@ class TestSolvedPage(unittest.TestCase):
     def test_solved_page_links_back_to_the_profile(self):
         self.assertIn(f"https://github.com/{REPO}", self.page)
 
+    def test_solved_page_offers_a_way_back_to_the_profile_itself(self):
+        # The owner's page, not the repository -- that is where the board is.
+        owner = REPO.split("/")[0]
+        self.assertIn(f"](https://github.com/{owner})", self.page)
+
+    def test_the_way_back_is_a_button_rather_than_another_footer_link(self):
+        # <kbd> survives GitHub's sanitiser and renders as a raised key, which
+        # is the closest thing to a button available in a rendered README.
+        self.assertRegex(
+            self.page,
+            r"\[<kbd>[^<]+</kbd>\]\(https://github\.com/[^/)]+\)",
+        )
+
+    def test_only_the_solved_page_carries_the_button(self):
+        mid_game = render.state_page(PUZZLE, lo.click(PUZZLE.start, 4), REPO)
+        self.assertNotIn("<kbd>", mid_game)
+
 
 class TestReadmeBlock(unittest.TestCase):
     def setUp(self):
@@ -209,21 +226,37 @@ class TestReadmeTileImage(unittest.TestCase):
         self.assertNotIn("init.svg", render.archive_entry(PUZZLE))
 
 
-class TestAboutLink(unittest.TestCase):
-    """The profile README carries no `## Lights Out` heading, so state pages
-    cannot rely on a bare `#lights-out` fragment."""
+class TestSourceLink(unittest.TestCase):
+    """The explanation is the README of `src/`, and GitHub renders it under the
+    file listing, so the link points at the directory rather than the file."""
 
-    def test_state_pages_link_about_at_the_how_it_works_doc(self):
-        page = render.state_page(PUZZLE, lo.click(PUZZLE.start, 2), REPO)
-        self.assertIn(f"https://github.com/{REPO}/blob/main/{render.ABOUT_PATH}", page)
+    def pages(self):
+        return [
+            render.state_page(PUZZLE, state, REPO)
+            for state in (PUZZLE.start, 0x0000, lo.click(PUZZLE.start, 5))
+        ]
 
-    def test_solved_page_links_about_at_the_how_it_works_doc(self):
-        page = render.state_page(PUZZLE, 0x0000, REPO)
-        self.assertIn(f"https://github.com/{REPO}/blob/main/{render.ABOUT_PATH}", page)
+    def test_every_page_links_at_the_source_directory(self):
+        url = f"https://github.com/{REPO}/tree/main/{render.SOURCE_PATH}"
+        for page in self.pages():
+            self.assertIn(f"]({url})", page)
+
+    def test_the_link_is_labelled_view_source(self):
+        for page in self.pages():
+            self.assertIn(f"[{render.SOURCE_LABEL}](", page)
+
+    def test_no_page_still_offers_the_old_labels(self):
+        for page in self.pages():
+            self.assertNotIn("How it works", page)
+            self.assertNotIn("[About]", page)
+
+    def test_no_page_links_straight_at_the_readme_file(self):
+        for page in self.pages():
+            self.assertNotIn(render.SOURCE_DOC, page)
 
     def test_no_page_relies_on_a_bare_anchor_fragment(self):
-        for state in (PUZZLE.start, 0x0000, lo.click(PUZZLE.start, 5)):
-            self.assertNotIn("#lights-out", render.state_page(PUZZLE, state, REPO))
+        for page in self.pages():
+            self.assertNotIn("#lights-out", page)
 
 
 class TestReadmeSplicing(unittest.TestCase):

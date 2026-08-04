@@ -42,10 +42,11 @@ GITHUB_REPOSITORY=hhzks/hhzks python src/verify.py --days 365
 
 ## Things that will break it
 
-- **Moving or deleting `src/README.md`.** All 4,096 state pages link out to it,
-  as does the About link on the profile. `verify.py` fails the build if it is
-  missing, or if the profile stops linking to it. Move it and `render.ABOUT_PATH`
-  has to move with it.
+- **Moving or deleting `src/README.md`.** Every state page and the profile link
+  at `src/`, which is only worth opening because GitHub renders that README
+  under the file listing. `verify.py` fails the build if it is missing, or if
+  the profile stops linking to `src/`. Move it and `render.SOURCE_PATH` has to
+  move with it.
 - **Deleting a tile image.** `verify.py` checks all three of `on.svg`,
   `off.svg` and `init.svg` exist; the last one is used only by the profile
   board.
