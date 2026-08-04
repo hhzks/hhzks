@@ -69,9 +69,9 @@ needlessly complex.
 ## Building it yourself
 
 ```bash
-python tools/generate.py --date 2026-08-04   # write the state graph
-python tools/verify.py   --date 2026-08-04   # check it before publishing
-python -m unittest discover -s tools -t tools
+python src/generate.py --date 2026-08-04   # write the state graph
+python src/verify.py   --date 2026-08-04   # check it before publishing
+python -m unittest discover -s src -t src
 ```
 
 `verify.py` is the gate: it re-derives the reachable set, checks every link

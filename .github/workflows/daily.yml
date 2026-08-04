@@ -30,18 +30,18 @@ jobs:
           python-version: "3.12"
 
       - name: Unit tests
-        run: python -m unittest discover -s tools -t tools
+        run: python -m unittest discover -s src -t src
 
       - name: Generate the puzzle
         run: |
-          python tools/generate.py --out build/daily \
+          python src/generate.py --out build/daily \
             ${{ inputs.date && format('--date {0}', inputs.date) || '' }}
 
       # Must pass before anything is pushed: a broken push means a dead puzzle
       # on the profile until tomorrow.
       - name: Verify
         run: |
-          python tools/verify.py --out build/daily --days 14 \
+          python src/verify.py --out build/daily --days 14 \
             ${{ inputs.date && format('--date {0}', inputs.date) || '' }}
 
       - name: Commit README and archive to main
@@ -79,5 +79,5 @@ jobs:
             echo ""
             echo "- states published: $(find build/daily -name '*.md' | wc -l)"
             echo "- size: $(du -sh build/daily | cut -f1)"
-            echo "- board: https://github.com/${GITHUB_REPOSITORY}#lights-out"
+            echo "- board: https://github.com/${GITHUB_REPOSITORY}"
           } >> "$GITHUB_STEP_SUMMARY"

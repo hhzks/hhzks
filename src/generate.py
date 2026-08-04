@@ -1,7 +1,7 @@
 """Generate a day's Lights Out state graph, README board and archive entry.
 
-    python tools/generate.py                      # today, into build/daily
-    python tools/generate.py --date 2026-08-04    # any day, reproducibly
+    python src/generate.py                      # today, into build/daily
+    python src/generate.py --date 2026-08-04    # any day, reproducibly
 
 Writes ~4,096 tiny markdown files -- one per reachable board -- plus the two
 tile images. The state graph is meant for the orphan `daily` branch; the README

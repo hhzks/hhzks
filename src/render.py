@@ -17,8 +17,9 @@ RULES = "Click a tile to toggle it and its neighbours. Turn every light off."
 README_RULES = "Click a tile to toggle it and its neighbours."
 
 # The profile README carries no `## Lights Out` heading, so there is no
-# `#lights-out` anchor to point at. Link the explanation itself instead.
-ABOUT_PATH = "docs/how-it-works.md"
+# `#lights-out` anchor to point at. Link the explanation itself instead: it is
+# the README of `src/`, so GitHub also renders it when browsing the sources.
+ABOUT_PATH = "src/README.md"
 
 # Tile images. The profile board lights up with `init.svg`, which animates; the
 # 4,096 state pages and the archive use the static `on.svg`, so a page full of

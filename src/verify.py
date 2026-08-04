@@ -3,8 +3,8 @@
 Runs before the push. A broken push means a dead puzzle on the profile until
 tomorrow, so every check here is a build-failing condition.
 
-    python tools/verify.py --date 2026-08-04
-    python tools/verify.py --days 365          # a year, locally, without pushing
+    python src/verify.py --date 2026-08-04
+    python src/verify.py --days 365          # a year, locally, without pushing
 """
 
 import argparse
