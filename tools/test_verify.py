@@ -31,7 +31,9 @@ def setUpModule():
     (ROOT / "img" / "on.svg").write_text("<svg>on</svg>", encoding="utf-8")
     (ROOT / "img" / "off.svg").write_text("<svg>off</svg>", encoding="utf-8")
     (ROOT / "README.md").write_text(
-        f"## Hi\n\n{render.START_MARKER}\nold\n{render.END_MARKER}\n", encoding="utf-8"
+        f"## Hi\n\n{render.START_MARKER}\nold\n{render.END_MARKER}\n\n"
+        f"## Lights Out\n\nEvery tile toggles its neighbours.\n",
+        encoding="utf-8",
     )
     generate.main(
         ["--date", DAY.isoformat(), "--out", str(OUT), "--root", str(ROOT)],
@@ -167,6 +169,34 @@ class TestReadmeChecks(unittest.TestCase):
 
     def test_a_clean_readme_produces_no_errors(self):
         self.assertEqual(verify.check_readme(REPO, ROOT, OUT), [])
+
+
+class TestProfileAnchor(unittest.TestCase):
+    """Every state page links back to `#lights-out`; the heading must survive."""
+
+    def test_the_anchor_heading_is_present(self):
+        readme = ROOT / "README.md"
+        with Corrupted(readme) as path:
+            path.write_text("# Profile\n\n## Lights Out\n\ntext\n", encoding="utf-8")
+            self.assertEqual(verify.check_profile_anchor(ROOT), [])
+
+    def test_a_renamed_heading_is_caught(self):
+        readme = ROOT / "README.md"
+        with Corrupted(readme) as path:
+            path.write_text("# Profile\n\n## The Puzzle\n\ntext\n", encoding="utf-8")
+            errors = verify.check_profile_anchor(ROOT)
+        self.assertTrue(any("lights-out" in e for e in errors))
+
+    def test_the_dated_block_heading_does_not_satisfy_the_anchor(self):
+        readme = ROOT / "README.md"
+        with Corrupted(readme) as path:
+            path.write_text("# Profile\n\n### Lights Out · 2026-08-04\n", encoding="utf-8")
+            self.assertTrue(verify.check_profile_anchor(ROOT))
+
+    def test_state_pages_link_to_the_anchor_the_readme_provides(self):
+        page = (OUT / render.state_path(PUZZLE.start)).read_text(encoding="utf-8")
+        self.assertIn("#lights-out", page)
+        self.assertEqual(verify.check_profile_anchor(ROOT), [])
 
 
 class TestMainFailsLoudly(unittest.TestCase):

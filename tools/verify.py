@@ -135,6 +135,28 @@ def check_readme(repo, root, out):
     return errors
 
 
+def _slug(heading):
+    """Approximate GitHub's heading-to-anchor rule."""
+    text = re.sub(r"[^\w\s-]", "", heading.lstrip("#").strip().lower())
+    return re.sub(r"\s+", "-", text).strip("-")
+
+
+def check_profile_anchor(root):
+    """Every state page links back to `#lights-out`, so the heading must exist.
+
+    The generated block heading carries the date and slugs to something else,
+    which is why this looks for the standalone section rather than any match.
+    """
+    text = (Path(root) / "README.md").read_text(encoding="utf-8")
+    slugs = {_slug(line) for line in text.splitlines() if line.startswith("#")}
+    if "lights-out" not in slugs:
+        return [
+            "README has no heading anchoring #lights-out; "
+            "all 4096 state pages link there"
+        ]
+    return []
+
+
 def verify(day, repo, out, root):
     """Every §9 criterion. An empty list means the build may be published."""
     return (
@@ -145,6 +167,7 @@ def verify(day, repo, out, root):
         + check_tiles(out)
         + check_click_targets(day, out)
         + check_readme(repo, root, out)
+        + check_profile_anchor(root)
     )
 
 
