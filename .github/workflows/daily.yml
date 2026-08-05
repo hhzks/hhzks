@@ -4,7 +4,7 @@ on:
   schedule:
     # Actions cron is queued at low priority and drifts by minutes to hours,
     # so nothing user-facing promises a specific time of day.
-    - cron: "0 6 * * *"
+    - cron: "0 0 * * *"
   workflow_dispatch:
     inputs:
       date:
