@@ -23,13 +23,13 @@ jobs:
     runs-on: ubuntu-latest
     env:
       # The daily commits are the repo owner's, not github-actions[bot]'s, so
-      # they read as the owner's activity. The noreply address is the one
-      # GitHub itself uses for web commits, so it attributes to the account
-      # without publishing a real address.
-      GIT_AUTHOR_NAME: hhzks
-      GIT_AUTHOR_EMAIL: 125699372+hhzks@users.noreply.github.com
-      GIT_COMMITTER_NAME: hhzks
-      GIT_COMMITTER_EMAIL: 125699372+hhzks@users.noreply.github.com
+      # they read as the owner's activity. The identity lives in the repo
+      # variables COMMIT_NAME and COMMIT_EMAIL; unset either and the commit
+      # steps fail loudly rather than quietly reverting to the bot.
+      GIT_AUTHOR_NAME: ${{ vars.COMMIT_NAME }}
+      GIT_AUTHOR_EMAIL: ${{ vars.COMMIT_EMAIL }}
+      GIT_COMMITTER_NAME: ${{ vars.COMMIT_NAME }}
+      GIT_COMMITTER_EMAIL: ${{ vars.COMMIT_EMAIL }}
     steps:
       - uses: actions/checkout@v4
 
