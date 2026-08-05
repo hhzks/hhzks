@@ -22,10 +22,6 @@ jobs:
   generate:
     runs-on: ubuntu-latest
     env:
-      # The daily commits are the repo owner's, not github-actions[bot]'s, so
-      # they read as the owner's activity. The identity lives in the repo
-      # variables COMMIT_NAME and COMMIT_EMAIL; unset either and the commit
-      # steps fail loudly rather than quietly reverting to the bot.
       GIT_AUTHOR_NAME: ${{ vars.COMMIT_NAME }}
       GIT_AUTHOR_EMAIL: ${{ vars.COMMIT_EMAIL }}
       GIT_COMMITTER_NAME: ${{ vars.COMMIT_NAME }}
