@@ -112,8 +112,8 @@ def state_page(puzzle, state, repo):
             f"## Solved 🎉\n\n"
             f"{board}\n\n"
             f"Every light is off. Today's board could be cleared in "
-            f"**{puzzle.min_clicks} clicks** — how did you do?\n\n"
-            f"[<kbd> ← Back to the profile </kbd>]({profile})\n\n"
+            f"**{puzzle.min_clicks} clicks**, how did you do?\n\n"
+            f"[<kbd> ← Back to profile </kbd>]({profile})\n\n"
             f"[Play again]({relative_link(state, puzzle.start)}) · "
             f"[{SOURCE_LABEL}]({source}) · "
             f"[Past puzzles]({archive_url})\n"
@@ -178,6 +178,6 @@ def archive_entry(puzzle):
         f"{board}\n\n"
         f"Minimum solution: **{puzzle.min_clicks} clicks**\n\n"
         f"<details><summary>Solution</summary>\n\n"
-        f"Click {clicks} — in any order, since clicks commute.\n\n"
+        f"Click {clicks} (in any order)\n\n"
         f"</details>\n"
     )
