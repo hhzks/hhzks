@@ -13,7 +13,7 @@ START_MARKER = "<!-- LIGHTS:START -->"
 END_MARKER = "<!-- LIGHTS:END -->"
 
 # The play pages state the goal; the profile README is kept deliberately terse.
-RULES = "Click a tile to toggle it and its neighbours. Turn every light off."
+RULES = "Click on a tile to toggle it and its neighbours. Turn every light off."
 README_RULES = "Click a tile to toggle it and its neighbours."
 
 # The profile README carries no `## Lights Out` heading, so there is no
@@ -111,7 +111,7 @@ def state_page(puzzle, state, repo):
             f"# Lights Out · {puzzle.date}\n\n"
             f"## Solved 🎉\n\n"
             f"{board}\n\n"
-            f"Every light is off. Today's board could be cleared in "
+            f"Today's board could be cleared in "
             f"**{puzzle.min_clicks} clicks**, how did you do?\n\n"
             f"[<kbd> ← Back to profile </kbd>]({profile})\n\n"
             f"[Play again]({relative_link(state, puzzle.start)}) · "
