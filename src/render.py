@@ -112,7 +112,7 @@ def state_page(puzzle, state, repo):
             f"## Solved 🎉\n\n"
             f"{board}\n\n"
             f"Today's board could be cleared in "
-            f"**{puzzle.min_clicks} clicks**, how did you do?\n\n"
+            f"**{puzzle.min_clicks} clicks**.\n\n"
             f"[<kbd> ← Back to profile </kbd>]({profile})\n\n"
             f"[Play again]({relative_link(state, puzzle.start)}) · "
             f"[{SOURCE_LABEL}]({source}) · "
