@@ -178,6 +178,6 @@ def archive_entry(puzzle):
         f"{board}\n\n"
         f"Minimum solution: **{puzzle.min_clicks} clicks**\n\n"
         f"<details><summary>Solution</summary>\n\n"
-        f"Click {clicks} (in any order)\n\n"
+        f"Click {clicks} (in any order).\n\n"
         f"</details>\n"
     )
