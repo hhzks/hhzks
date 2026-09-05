@@ -1,0 +1,18 @@
+# Lights Out · 2026-09-05
+
+Click on a tile to toggle it and its neighbours. Turn every light off.
+
+|  |  |  |  |
+|:-:|:-:|:-:|:-:|
+| [<img src="../../img/off.svg" width="64" alt="off">](../6/6ebd.md) | [<img src="../../img/on.svg" width="64" alt="on">](../6/6e89.md) | [<img src="../../img/on.svg" width="64" alt="on">](../6/6ee0.md) | [<img src="../../img/on.svg" width="64" alt="on">](../6/6e22.md) |
+| [<img src="../../img/off.svg" width="64" alt="off">](../6/6f9f.md) | [<img src="../../img/on.svg" width="64" alt="on">](../6/6cdc.md) | [<img src="../../img/off.svg" width="64" alt="off">](../6/6a4a.md) | [<img src="../../img/on.svg" width="64" alt="on">](../6/6666.md) |
+| [<img src="../../img/off.svg" width="64" alt="off">](../7/7dbe.md) | [<img src="../../img/on.svg" width="64" alt="on">](../4/498e.md) | [<img src="../../img/on.svg" width="64" alt="on">](../2/20ee.md) | [<img src="../../img/on.svg" width="64" alt="on">](../e/e22e.md) |
+| [<img src="../../img/off.svg" width="64" alt="off">](../5/5fae.md) | [<img src="../../img/on.svg" width="64" alt="on">](../1/1cae.md) | [<img src="../../img/on.svg" width="64" alt="on">](../8/8aae.md) | [<img src="../../img/off.svg" width="64" alt="off">](../a/a6ae.md) |
+
+[↻ Reset](../b/bd65.md) · [View source](https://github.com/hhzks/hhzks/tree/main/src) · [Yesterday's solution](https://github.com/hhzks/hhzks/blob/main/archive/2026-09.md)
+
+<details><summary>Hint</summary>
+
+5 clicks from solved.
+
+</details>
