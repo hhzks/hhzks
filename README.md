@@ -14,8 +14,6 @@ Click a tile to toggle it and its neighbours.
 
 ## Projects
 
-<br>
-
 ### [Audio Engine](https://github.com/hhzks/rt-audio)
 
 **Low-latency realtime audio passthrough with an effects chain, written in C++26 with a Rust terminal UI.**
