@@ -1,5 +1,3 @@
-# hhzks
-
 <!-- LIGHTS:START -->
 ### Lights Out · 2026-11-04
 
@@ -18,7 +16,7 @@ Click a tile to toggle it and its neighbours.
 
 <br>
 
-### 🎛️ [rt-audio](https://github.com/hhzks/rt-audio)
+### [Audio Engine](https://github.com/hhzks/rt-audio)
 
 **Low-latency realtime audio passthrough with an effects chain, written in C++26 with a Rust terminal UI.**
 
@@ -33,7 +31,7 @@ Click a tile to toggle it and its neighbours.
 
 <br>
 
-### 📑 [pdf-bookmarker](https://github.com/hhzks/pdf-bookmarker)
+### [PDF Bookmarker](https://github.com/hhzks/pdf-bookmarker)
 
 **Adds a clickable chapter and section outline to PDFs that have none.** [Try it in the browser →](https://pdf-bookmarker.vercel.app/)
 
@@ -51,7 +49,7 @@ Click a tile to toggle it and its neighbours.
 
 <br>
 
-### 🌙 [sleep-insight-app](https://github.com/hhzks/sleep-insight-app)
+### [Sleep Insight App](https://github.com/hhzks/sleep-insight-app)
 
 **A sleep tracker with Fitbit sync and AI insights from a self-hosted model.** [Open the app →](https://sleepinsight.pages.dev)
 
