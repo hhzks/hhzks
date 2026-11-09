@@ -1,5 +1,5 @@
 <!-- LIGHTS:START -->
-### Lights Out · 2026-11-05
+### Lights Out · 2026-11-09
 
 Click a tile to toggle it and its neighbours.
 |  |  |  |  |
