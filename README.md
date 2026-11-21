@@ -1,13 +1,13 @@
 <!-- LIGHTS:START -->
-### Lights Out · 2026-11-20
+### Lights Out · 2026-11-21
 
 Click a tile to toggle it and its neighbours.
 |  |  |  |  |
 |:-:|:-:|:-:|:-:|
-| [<img src="./img/init.svg" width="64" alt="on">](https://github.com/hhzks/hhzks/blob/daily/s/a/a4e8.md) | [<img src="./img/init.svg" width="64" alt="on">](https://github.com/hhzks/hhzks/blob/daily/s/a/a4dc.md) | [<img src="./img/off.svg" width="64" alt="off">](https://github.com/hhzks/hhzks/blob/daily/s/a/a4b5.md) | [<img src="./img/init.svg" width="64" alt="on">](https://github.com/hhzks/hhzks/blob/daily/s/a/a477.md) |
-| [<img src="./img/init.svg" width="64" alt="on">](https://github.com/hhzks/hhzks/blob/daily/s/a/a5ca.md) | [<img src="./img/init.svg" width="64" alt="on">](https://github.com/hhzks/hhzks/blob/daily/s/a/a689.md) | [<img src="./img/init.svg" width="64" alt="on">](https://github.com/hhzks/hhzks/blob/daily/s/a/a01f.md) | [<img src="./img/init.svg" width="64" alt="on">](https://github.com/hhzks/hhzks/blob/daily/s/a/ac33.md) |
-| [<img src="./img/off.svg" width="64" alt="off">](https://github.com/hhzks/hhzks/blob/daily/s/b/b7eb.md) | [<img src="./img/off.svg" width="64" alt="off">](https://github.com/hhzks/hhzks/blob/daily/s/8/83db.md) | [<img src="./img/init.svg" width="64" alt="on">](https://github.com/hhzks/hhzks/blob/daily/s/e/eabb.md) | [<img src="./img/off.svg" width="64" alt="off">](https://github.com/hhzks/hhzks/blob/daily/s/2/287b.md) |
-| [<img src="./img/off.svg" width="64" alt="off">](https://github.com/hhzks/hhzks/blob/daily/s/9/95fb.md) | [<img src="./img/init.svg" width="64" alt="on">](https://github.com/hhzks/hhzks/blob/daily/s/d/d6fb.md) | [<img src="./img/off.svg" width="64" alt="off">](https://github.com/hhzks/hhzks/blob/daily/s/4/40fb.md) | [<img src="./img/init.svg" width="64" alt="on">](https://github.com/hhzks/hhzks/blob/daily/s/6/6cfb.md) |
+| [<img src="./img/off.svg" width="64" alt="off">](https://github.com/hhzks/hhzks/blob/daily/s/6/62eb.md) | [<img src="./img/off.svg" width="64" alt="off">](https://github.com/hhzks/hhzks/blob/daily/s/6/62df.md) | [<img src="./img/off.svg" width="64" alt="off">](https://github.com/hhzks/hhzks/blob/daily/s/6/62b6.md) | [<img src="./img/init.svg" width="64" alt="on">](https://github.com/hhzks/hhzks/blob/daily/s/6/6274.md) |
+| [<img src="./img/init.svg" width="64" alt="on">](https://github.com/hhzks/hhzks/blob/daily/s/6/63c9.md) | [<img src="./img/init.svg" width="64" alt="on">](https://github.com/hhzks/hhzks/blob/daily/s/6/608a.md) | [<img src="./img/init.svg" width="64" alt="on">](https://github.com/hhzks/hhzks/blob/daily/s/6/661c.md) | [<img src="./img/init.svg" width="64" alt="on">](https://github.com/hhzks/hhzks/blob/daily/s/6/6a30.md) |
+| [<img src="./img/off.svg" width="64" alt="off">](https://github.com/hhzks/hhzks/blob/daily/s/7/71e8.md) | [<img src="./img/init.svg" width="64" alt="on">](https://github.com/hhzks/hhzks/blob/daily/s/4/45d8.md) | [<img src="./img/off.svg" width="64" alt="off">](https://github.com/hhzks/hhzks/blob/daily/s/2/2cb8.md) | [<img src="./img/off.svg" width="64" alt="off">](https://github.com/hhzks/hhzks/blob/daily/s/e/ee78.md) |
+| [<img src="./img/off.svg" width="64" alt="off">](https://github.com/hhzks/hhzks/blob/daily/s/5/53f8.md) | [<img src="./img/init.svg" width="64" alt="on">](https://github.com/hhzks/hhzks/blob/daily/s/1/10f8.md) | [<img src="./img/init.svg" width="64" alt="on">](https://github.com/hhzks/hhzks/blob/daily/s/8/86f8.md) | [<img src="./img/off.svg" width="64" alt="off">](https://github.com/hhzks/hhzks/blob/daily/s/a/aaf8.md) |
 <!-- LIGHTS:END -->
 
 [Past puzzles](archive/) · [View source](src/)
